@@ -1,1 +1,1 @@
-docker build -t iot .
+docker build -t iot-web .

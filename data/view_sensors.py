@@ -10,4 +10,4 @@ def query(query:str=None):
     print(cur.fetchall())
 
 if __name__ == "__main__":
-    query("select max(db_id) from sensors")
+    query("select * from sensor_log")

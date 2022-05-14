@@ -3,5 +3,6 @@ CREATE TABLE "sensors" (
 	"sensor_id"	INTEGER,
 	"name"	TEXT,
 	"type"	TEXT,
+	"status" TEXT,
 	PRIMARY KEY("db_id")
 );

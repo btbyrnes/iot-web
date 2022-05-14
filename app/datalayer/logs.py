@@ -1,17 +1,17 @@
 from datetime import datetime
 import sqlite3
-import json
+
 
 DATASOURCE = "/data/iot.db"
 
-LOG_INSERT_QUERY = "insert into sensor_log (db_id, sensor_id, time, measure) values (?, ?, ?, ?)"
-LOG_READ_QUERY = "select db_id, sensor_id, time, measure from sensor_log where sensor_id = (?)"
+LOG_INSERT_QUERY = "insert into sensor_log (sensor_id, time, measure) values (?, ?, ?)"
+LOG_READ_QUERY = "select sensor_id, time, measure from sensor_log where sensor_id = (?)"
 
 
-def post_log(db_id:int, sensor_id:int, time:str, measure:str) -> dict:
+def post(sensor_id:int, time:str, measure:str) -> dict:
     try:
         with sqlite3.connect(DATASOURCE) as con:
-            con.execute(LOG_INSERT_QUERY, [db_id, sensor_id, time, measure])
+            con.execute(LOG_INSERT_QUERY, [sensor_id, time, measure])
         return {"success":1}
         
     except Exception as e:
@@ -19,17 +19,18 @@ def post_log(db_id:int, sensor_id:int, time:str, measure:str) -> dict:
         return {"success":0}
 
 
-def get_log(db_id:int) -> dict:
+def get(sensor_id:int) -> dict:
     try:
         with sqlite3.connect(DATASOURCE) as con:
-                cur = con.execute(LOG_READ_QUERY, [69])
+                cur = con.execute(LOG_READ_QUERY, [sensor_id])
                 rows = cur.fetchall()
                 result = {}
                 for i, row in enumerate(rows):
-                    result[i] = {"db_id":row[0], "sensor_id":row[1], "time":row[2], "measure":row[3]}
+                    result[i] = {"sensor_id":row[0], "time":row[1], "measure":row[2]}
         return result
 
     except Exception as e:
         print(e)
+        return {"success":0}
 
 
